@@ -19,3 +19,18 @@ scrape_configs:
   - job_name: 'worker-grinserver'
     static_configs:
       - targets: ['158.69.192.72:9323']  # Docker metrics
+
+    # WordPress stack
+  - job_name: 'wordpress-node-exporter'
+    static_configs:
+      - targets: ['158.69.192.72:9100']
+        labels:
+          environment: 'production'
+          service: 'wordpress'
+  
+  - job_name: 'wordpress-cadvisor'
+    static_configs:
+      - targets: ['158.69.192.72:8081']
+        labels:
+          environment: 'production'
+          service: 'wordpress'

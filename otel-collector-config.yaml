@@ -25,7 +25,7 @@ processors:
 
 exporters:
   prometheus:
-    endpoint: "0.0.0.0:8889"
+    endpoint: "0.0.0.0:8888"
   
   # Para logs, usar OTLP HTTP hacia Loki
   otlphttp/loki:

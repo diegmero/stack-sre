@@ -34,3 +34,31 @@ scrape_configs:
       - targets: ['jaeger:14269']
         labels:
           environment: 'production'
+
+  - job_name: 'mongodb'
+    static_configs:
+      - targets: ['158.69.192.72:9216']
+        labels:
+          environment: 'demo'
+          database: 'mongodb'
+  
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['158.69.192.72:9187']
+        labels:
+          environment: 'demo'
+          database: 'postgres'
+  
+  - job_name: 'mysql'
+    static_configs:
+      - targets: ['158.69.192.72:9104']
+        labels:
+          environment: 'demo'
+          database: 'mysql'
+  
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['158.69.192.72:9121']
+        labels:
+          environment: 'demo'
+          database: 'redis'

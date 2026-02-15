@@ -10,6 +10,7 @@ services:
       - "4319:4317"   # OTLP gRPC
       - "4320:4318"   # OTLP HTTP
       - "8888:8888"   # Prometheus metrics del collector
+      - "8889:8889"   # para el exporter
       - "9411:9411"   # Zipkin
     
     volumes:

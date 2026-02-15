@@ -15,17 +15,16 @@ scrape_configs:
     static_configs:
       - targets: ['grafana:3000']
   
-  # Agentes en el MISMO servidor (usar localhost)
   - job_name: 'grinserver-node-exporter'
     static_configs:
-      - targets: ['localhost:9100']
+      - targets: ['node-exporter:9100']
         labels:
           environment: 'production'
           host: 'grinserver'
   
   - job_name: 'grinserver-cadvisor'
     static_configs:
-      - targets: ['localhost:8081']
+      - targets: ['cadvisor:8080']
         labels:
           environment: 'production'
           host: 'grinserver'

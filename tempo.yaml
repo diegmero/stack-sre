@@ -1,6 +1,16 @@
+# Fuerza a Tempo a correr todos los módulos en un solo proceso
+target: all
+
 server:
   http_listen_port: 3200
   grpc_listen_port: 9095
+
+# Esta sección 'common' es la que arregla el error de "Empty Ring"
+common:
+  replication_factor: 1
+  path_defaults:
+    kvstore:
+      store: inmemory
 
 distributor:
   receivers:
@@ -11,14 +21,7 @@ distributor:
         grpc:
           endpoint: "0.0.0.0:4317"
 
-# ESTO ELIMINA EL ERROR 'EMPTY RING'
 ingester:
-  lifecycler:
-    ring:
-      kvstore:
-        store: inmemory
-      replication_factor: 1
-    final_sleep: 0s
   max_block_duration: 5m
 
 storage:
@@ -29,7 +32,7 @@ storage:
     local:
       path: /tmp/tempo/blocks
 
-# Para que Grafana no de error al abrir la pestaña
+# Configuramos el generador de métricas sin anillos externos
 metrics_generator:
   registry:
     external_labels:

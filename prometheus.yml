@@ -7,25 +7,21 @@ scrape_configs:
     static_configs:
       - targets: ['localhost:9090']
   
-  - job_name: 'otel-collector'
-    static_configs:
-      - targets: ['otel-collector:8888']
-  
   - job_name: 'grafana'
     static_configs:
       - targets: ['grafana:3000']
   
-  # ✅ Correcto - monitorea TODO el servidor
+  # Agentes en el MISMO servidor (usar localhost o IP interna)
   - job_name: 'grinserver-node-exporter'
     static_configs:
-      - targets: ['158.69.192.72:9100']
+      - targets: ['localhost:9100']
         labels:
           environment: 'production'
           host: 'grinserver'
-
+  
   - job_name: 'grinserver-cadvisor'
     static_configs:
-      - targets: ['158.69.192.72:8081']
+      - targets: ['localhost:8081']
         labels:
           environment: 'production'
           host: 'grinserver'

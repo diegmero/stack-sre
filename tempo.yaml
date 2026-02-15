@@ -1,18 +1,24 @@
 server:
   http_listen_port: 3200
 
+# 1. Configuración de coordinación interna (ELIMINA EL ERROR EMPTY RING)
+memberlist:
+  abort_if_cluster_join_fails: false
+  bind_addr: ["127.0.0.1"]
+
 distributor:
   receivers:
     otlp:
       protocols:
         http:
-          endpoint: "0.0.0.0:4318" # Añadimos puerto HTTP
+          endpoint: "0.0.0.0:4318" # Http
         grpc:
-          endpoint: "0.0.0.0:4317" # Puerto gRPC para el Collector
+          endpoint: "0.0.0.0:4317" # Puerto gRPC del collector
 
 ingester:
   max_block_duration: 5m
 
+# 2. Habilitar la búsqueda y métricas en trazas
 storage:
   trace:
     backend: local
@@ -20,3 +26,16 @@ storage:
       path: /tmp/tempo/wal
     local:
       path: /tmp/tempo/blocks
+
+# 3. Necesario para que la query "rate()" funcione en Grafana
+metrics_generator:
+  registry:
+    external_labels:
+      source: tempo
+  storage:
+    path: /tmp/tempo/generator/wal
+    remote_write:
+      - url: http://prometheus:9090/api/v1/write # Envía métricas de trazas a Prometheus
+
+overrides:
+  metrics_generator_processors: [service-graphs, span-metrics]

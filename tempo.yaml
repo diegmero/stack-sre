@@ -2,11 +2,6 @@ server:
   http_listen_port: 3200
   grpc_listen_port: 9095
 
-# Esto coordina los módulos internos y quita el error de "Empty Ring"
-memberlist:
-  abort_if_cluster_join_fails: false
-  bind_addr: ["127.0.0.1"]
-
 distributor:
   receivers:
     otlp:
@@ -16,7 +11,14 @@ distributor:
         grpc:
           endpoint: "0.0.0.0:4317"
 
+# ESTO ELIMINA EL ERROR 'EMPTY RING'
 ingester:
+  lifecycler:
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+    final_sleep: 0s
   max_block_duration: 5m
 
 storage:
@@ -27,7 +29,7 @@ storage:
     local:
       path: /tmp/tempo/blocks
 
-# Activamos el generador de métricas de forma básica y compatible
+# Para que Grafana no de error al abrir la pestaña
 metrics_generator:
   registry:
     external_labels:

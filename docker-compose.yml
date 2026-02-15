@@ -56,7 +56,7 @@ services:
 
   jaeger:
     container_name: jaeger
-    image: jaegertracing/all-in-one:1.65
+    image: jaegertracing/all-in-one:latest
     restart: unless-stopped
     
     ports:

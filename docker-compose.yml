@@ -54,6 +54,31 @@ services:
         reservations:
           memory: 256M
 
+  jaeger:
+    container_name: jaeger
+    image: jaegertracing/all-in-one:1.65
+    restart: unless-stopped
+    
+    ports:
+      - "127.0.0.1:16686:16686"  # UI de Jaeger
+      - "14268:14268"             # Jaeger collector HTTP
+      - "14250:14250"             # Jaeger collector gRPC
+    
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - METRICS_STORAGE_TYPE=prometheus
+      - PROMETHEUS_SERVER_URL=http://prometheus:9090
+    
+    networks:
+      - observability
+    
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+
   # Loki (logs)
   loki:
     container_name: loki

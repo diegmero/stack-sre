@@ -11,13 +11,6 @@ distributor:
 ingester:
   max_block_duration: 5m
 
-metrics_generator:
-  registry:
-    external_labels:
-      source: tempo
-  storage:
-    path: /tmp/tempo/generator/wal
-
 storage:
   trace:
     backend: local

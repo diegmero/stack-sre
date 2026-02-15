@@ -32,7 +32,13 @@ exporters:
     endpoint: "http://loki:3100/otlp"
     tls:
       insecure: true
-  
+
+    # Trazas a Jaeger
+  otlp/jaeger:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+      
   # Para trazas, enviar a Tempo
   otlp/tempo:
     endpoint: tempo:4317
@@ -56,7 +62,7 @@ service:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlp/tempo, debug]
+      exporters: [otlp/jaeger, otlp/tempo, debug]  # Enviar a ambos
     metrics:
       receivers: [otlp, prometheus]
       processors: [memory_limiter, batch]

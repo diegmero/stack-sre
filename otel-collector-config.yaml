@@ -27,30 +27,35 @@ exporters:
   prometheus:
     endpoint: "0.0.0.0:8889"
   
-  loki:
-    endpoint: "http://loki:3100/loki/api/v1/push"
+  # Para logs, usar OTLP HTTP hacia Loki
+  otlphttp/loki:
+    endpoint: "http://loki:3100/otlp"
+    tls:
+      insecure: true
   
-  otlp:
+  # Para trazas, enviar a Tempo
+  otlp/tempo:
     endpoint: tempo:4317
     tls:
       insecure: true
   
-  logging:
-    loglevel: info
+  # Debug (reemplaza logging)
+  debug:
+    verbosity: detailed
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [otlp, logging]
+      exporters: [otlp/tempo, debug]
     
     metrics:
       receivers: [otlp, prometheus]
       processors: [memory_limiter, batch]
-      exporters: [prometheus, logging]
+      exporters: [prometheus, debug]
     
     logs:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [loki, logging]
+      exporters: [otlphttp/loki, debug]

@@ -108,7 +108,7 @@ services:
   # Grafana (visualización)
   grafana:
     container_name: grafana
-    image: grafana/grafana:latest
+    image: grafana/grafana:10.4.10
     restart: unless-stopped
     
     ports:

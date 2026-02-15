@@ -1,7 +1,8 @@
 server:
   http_listen_port: 3200
+  grpc_listen_port: 9095
 
-# 1. RECEPTOR DE DATOS
+# 1. RECEPTOR
 distributor:
   receivers:
     otlp:
@@ -11,7 +12,7 @@ distributor:
         grpc:
           endpoint: "0.0.0.0:4317"
 
-# 2. CONFIGURACIÓN DEL ANILLO (Elimina el 'empty ring')
+# 2. ANILLO DEL INGESTER (Ya funciona, lo mantenemos)
 ingester:
   lifecycler:
     ring:
@@ -20,7 +21,17 @@ ingester:
       replication_factor: 1
   max_block_duration: 5m
 
-# 3. ALMACENAMIENTO LOCAL
+# 3. ANILLO DEL GENERADOR (Esto elimina el error de tus logs)
+metrics_generator:
+  registry:
+    external_labels:
+      source: tempo
+  storage:
+    path: /tmp/tempo/generator/wal
+  ring:
+    kvstore:
+      store: inmemory # <--- Clave para eliminar el 'empty ring' en generadores
+
 storage:
   trace:
     backend: local
@@ -28,3 +39,6 @@ storage:
       path: /tmp/tempo/wal
     local:
       path: /tmp/tempo/blocks
+
+overrides:
+  metrics_generator_processors: [service-graphs, span-metrics]

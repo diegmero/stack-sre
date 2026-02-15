@@ -117,7 +117,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-changeme}
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-traces-app
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
       - GF_SERVER_ROOT_URL=https://sre.grintic.com
     
     volumes:

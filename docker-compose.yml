@@ -60,7 +60,7 @@ services:
     restart: unless-stopped
     
     ports:
-      - "16686:16686"  # UI (cambiar a 0.0.0.0 para acceso externo)
+      - "0.0.0.0:16686:16686"  # UI (cambiar a 0.0.0.0 para acceso externo)
       - "14268:14268"  # Collector HTTP
       - "14250:14250"  # Collector gRPC
       #- "4317:4317"    # OTLP gRPC

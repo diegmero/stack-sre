@@ -28,3 +28,9 @@ scrape_configs:
         labels:
           environment: 'production'
           host: 'grinserver'
+
+  - job_name: 'jaeger'
+    static_configs:
+      - targets: ['jaeger:14269']
+        labels:
+          environment: 'production'

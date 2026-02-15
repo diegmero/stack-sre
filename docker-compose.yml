@@ -85,7 +85,7 @@ services:
     command: ["-config.file=/etc/tempo.yaml"]
     
     ports:
-      - "127.0.0.1:3200:3200"   # Tempo
+      - "3200:3200"   # Tempo
     
     volumes:
       - ./tempo.yaml:/etc/tempo.yaml

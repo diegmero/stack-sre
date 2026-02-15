@@ -2,7 +2,16 @@ server:
   http_listen_port: 3200
   grpc_listen_port: 9095
 
-# 1. RECEPTOR
+# Configuramos el Ingester para que no busque a nadie más
+ingester:
+  lifecycler:
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+  max_block_duration: 5m
+
+# Configuramos el Distribuidor (receptor de trazas)
 distributor:
   receivers:
     otlp:
@@ -12,16 +21,7 @@ distributor:
         grpc:
           endpoint: "0.0.0.0:4317"
 
-# 2. ANILLO DEL INGESTER (Ya funciona, lo mantenemos)
-ingester:
-  lifecycler:
-    ring:
-      kvstore:
-        store: inmemory
-      replication_factor: 1
-  max_block_duration: 5m
-
-# 3. ANILLO DEL GENERADOR (Esto elimina el error de tus logs)
+# Configuramos el Generador de métricas (lo que Grafana pide por defecto)
 metrics_generator:
   registry:
     external_labels:
@@ -30,8 +30,9 @@ metrics_generator:
     path: /tmp/tempo/generator/wal
   ring:
     kvstore:
-      store: inmemory # <--- Clave para eliminar el 'empty ring' en generadores
+      store: inmemory # Clave para evitar el error de la imagen anterior
 
+# Almacenamiento de las trazas
 storage:
   trace:
     backend: local

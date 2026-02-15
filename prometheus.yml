@@ -35,30 +35,31 @@ scrape_configs:
         labels:
           environment: 'production'
 
+# Bases de datos
   - job_name: 'mongodb'
     static_configs:
-      - targets: ['158.69.192.72:9216']
+      - targets: ['mongodb-exporter:9216']  # Cambiar aquí
         labels:
           environment: 'demo'
           database: 'mongodb'
   
   - job_name: 'postgres'
     static_configs:
-      - targets: ['158.69.192.72:9187']
+      - targets: ['postgres-exporter:9187']  # Cambiar aquí
         labels:
           environment: 'demo'
           database: 'postgres'
   
-  - job_name: 'mysql'
+  - job_name: 'mysql-demo'
     static_configs:
-      - targets: ['158.69.192.72:9104']
+      - targets: ['mysql-exporter:9104']  # Cambiar aquí
         labels:
           environment: 'demo'
           database: 'mysql'
   
   - job_name: 'redis'
     static_configs:
-      - targets: ['158.69.192.72:9121']
+      - targets: ['redis-exporter:9121']  # Cambiar aquí
         labels:
           environment: 'demo'
           database: 'redis'

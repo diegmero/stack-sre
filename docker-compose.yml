@@ -157,6 +157,53 @@ services:
         reservations:
           memory: 64M
 
+  node-exporter:
+    container_name: node-exporter
+    image: prom/node-exporter:latest
+    restart: unless-stopped
+    
+    ports:
+      - "9100:9100"
+    
+    command:
+      - '--path.rootfs=/host'
+    
+    volumes:
+      - /:/host:ro,rslave
+    
+    networks:
+      - observability  # Agregar esta línea
+    
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+  cadvisor:
+    container_name: cadvisor
+    image: gcr.io/cadvisor/cadvisor:latest
+    restart: unless-stopped
+    
+    ports:
+      - "8081:8080"
+    
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    
+    privileged: true
+    
+    networks:
+      - observability  # Agregar esta línea
+    
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
 volumes:
   prometheus_data:
   loki_data:
